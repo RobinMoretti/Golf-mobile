@@ -26,7 +26,6 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 
     void StartTouchPrimary(InputAction.CallbackContext context){
         if(context.ReadValue<float>() == 1){
-            Debug.Log("touch = " ); 
             if (OnStartTouch != null)
             {
                 OnStartTouch(PrimaryPosition(), (float)context.startTime);
@@ -41,9 +40,12 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     }
     
     public Vector3 PrimaryPosition(){
-        Vector3 potionInWorldSpace = Utils.ScreenToWorld(mainCamera, playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
+        Vector3 potionInWorldSpace = Utils.ScreenToWorld(mainCamera, getTouchPosition());
         
         return potionInWorldSpace;
+    }
+    public Vector3 getTouchPosition(){
+        return playerControls.Touch.PrimaryPosition.ReadValue<Vector2>();
     }
 
     #region Enable
