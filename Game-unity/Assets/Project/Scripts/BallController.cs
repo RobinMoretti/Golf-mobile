@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+{   
+    [SerializeField] private float shotStrenght = 2;
+    [SerializeField] private ForceMode forceMode;
+
+    private Rigidbody rigidbody;
+
+    private void Start() {
+        rigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void shot(Vector3 direction, float strenght){
+
+        direction.y = 0;
+        Debug.Log("direction = " + direction );
+        Debug.Log("strenght = " + strenght );
+        Debug.Log("strenght * shotStrenght = " + (strenght * shotStrenght) );
+        rigidbody.AddForce(direction * strenght * shotStrenght, forceMode);
     }
 }

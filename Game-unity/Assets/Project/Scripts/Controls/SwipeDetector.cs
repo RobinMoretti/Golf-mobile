@@ -9,12 +9,13 @@ public class SwipeDetector : MonoBehaviour
     private Vector3 startPosition, endPosition;
     private float startTime, endTime;
     private InputManager inputManager;
-    
+
     [SerializeField]private float minimumDistance = 0.2f;
     [SerializeField]private float maximumTime = 0.8f;
 
     [SerializeField] private GameObject trail;
     [SerializeField] private GameObject ball;
+    [SerializeField] private LayerMask canBeShotLayer;
 
     private bool playerHitTheBall = false;
 
@@ -56,7 +57,7 @@ public class SwipeDetector : MonoBehaviour
             if(playerHitTheBall == false){
                 Ray ray = Camera.main.ScreenPointToRay(inputManager.getTouchPosition());
                 RaycastHit hitInfo;
-                if(Physics.Raycast(ray, out hitInfo)){
+                if(Physics.Raycast(ray, out hitInfo, canBeShotLayer)){
                     if(hitInfo.collider.gameObject.tag == "Player"){
                         playerHitTheBall = true;
                     }
@@ -66,13 +67,18 @@ public class SwipeDetector : MonoBehaviour
     }
 
     private void DetectSwipe(){
-        if(Vector3.Distance(startPosition, endPosition) >= minimumDistance &&
+        float swipeLength = Vector3.Distance(startPosition, endPosition);
+        if(swipeLength >= minimumDistance &&
          (endTime-startTime) <= maximumTime){
             
-            Vector3 Direction = endPosition - startPosition;
-            Debug.DrawLine(startPosition, endPosition, Color.blue, 5f);
 
             if(playerHitTheBall){
+                Debug.DrawLine(startPosition, endPosition, Color.blue, 5f);
+                // get the shot vertor
+                Vector3 direction = endPosition - startPosition;
+
+                ball.GetComponent<BallController>().shot(direction, swipeLength);
+
                 print("fireeeee");
             }
             // ball.GetComponent<Rigidbody>().AddExplosionForce(
