@@ -16,6 +16,8 @@ public class SwipeDetector : MonoBehaviour
     [SerializeField] private GameObject trail;
     [SerializeField] private GameObject ball;
     [SerializeField] private LayerMask canBeShotLayer;
+    [SerializeField] private CameraController cameraController;
+
 
     private bool playerHitTheBall = false;
 
@@ -38,7 +40,7 @@ public class SwipeDetector : MonoBehaviour
         trail.transform.position = inputManager.PrimaryPosition();
         trail.GetComponent<TrailRenderer>().Clear();
         StartCoroutine("trailUpdate");
-
+        
     }
     private void SwipeEnd(Vector3 position, float time){
         endPosition = position;
@@ -52,17 +54,31 @@ public class SwipeDetector : MonoBehaviour
             yield return new WaitForFixedUpdate();
             trail.transform.position = inputManager.PrimaryPosition();
 
-            // detect if touched
-            // int distanceMax = 5;
-            if(playerHitTheBall == false){
-                Ray ray = Camera.main.ScreenPointToRay(inputManager.getTouchPosition());
-                RaycastHit hitInfo;
-                if(Physics.Raycast(ray, out hitInfo, canBeShotLayer)){
-                    if(hitInfo.collider.gameObject.tag == "Player"){
-                        playerHitTheBall = true;
-                    }
-                }
+            // // detect if touched
+            // if(playerHitTheBall == false){
+            //     Ray ray = Camera.main.ScreenPointToRay(inputManager.getTouchPosition());
+            //     RaycastHit hitInfo;
+            //     if(Physics.Raycast(ray, out hitInfo, canBeShotLayer)){
+            //         if(hitInfo.collider.gameObject.tag == "Player"){
+            //             playerHitTheBall = true;
+            //         }
+            //     }
+            // }
+
+
+            // rotate the cam
+            Vector3 _startPosition = startPosition;
+            Vector3 _endPosition = trail.transform.position;
+            
+            float swipeStrength = Vector3.Distance(_startPosition, _endPosition);
+
+            if(swipeStrength > 0.2f){
+
             }
+            if(_startPosition.x > _endPosition.x) swipeStrength *= -1;
+            Debug.Log("swipeStrength = " + swipeStrength );
+            
+            cameraController.rotate(swipeStrength* 1.5f);
         }
     }
 

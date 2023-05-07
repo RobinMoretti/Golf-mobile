@@ -16,9 +16,6 @@ public class BallController : MonoBehaviour
     public void shot(Vector3 direction, float strenght){
 
         direction.y = 0;
-        Debug.Log("direction = " + direction );
-        Debug.Log("strenght = " + strenght );
-        Debug.Log("strenght * shotStrenght = " + (strenght * shotStrenght) );
         rigidbody.AddForce(direction * strenght * shotStrenght, forceMode);
     }
 }

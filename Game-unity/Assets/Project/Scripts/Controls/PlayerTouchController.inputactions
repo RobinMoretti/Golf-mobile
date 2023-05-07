@@ -28,7 +28,7 @@
                 {
                     "name": "",
                     "id": "5c1d29aa-62f5-4f12-a905-381da95c00e9",
-                    "path": "<Touchscreen>/primaryTouch/press",
+                    "path": "<Touchscreen>/touch0/press",
                     "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
