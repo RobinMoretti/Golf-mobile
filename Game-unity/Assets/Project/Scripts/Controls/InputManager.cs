@@ -9,6 +9,8 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     public event StartTouch OnStartTouch;
     public delegate void EndTouch(Vector3 position, float time);
     public event EndTouch OnEndTouch;
+    public delegate void MoveJoystick(Vector2 direction);
+    public event MoveJoystick OnMoveJoystick;
 
     #endregion
 
@@ -22,8 +24,15 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     void Start()
     {
         playerControls.Touch.PrimaryContact.performed += context => StartTouchPrimary(context);
+        playerControls.Touch.CamJoystick.performed += context => MoveCamera(context);
     }
 
+    void MoveCamera(InputAction.CallbackContext context){
+        if (OnMoveJoystick != null)
+        {
+            OnMoveJoystick(context.ReadValue<Vector2>());
+        }
+    }
     void StartTouchPrimary(InputAction.CallbackContext context){
         if(context.ReadValue<float>() == 1){
             if (OnStartTouch != null)
