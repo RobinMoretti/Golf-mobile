@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     void MoveCamera(InputAction.CallbackContext context){
         if (OnMoveJoystick != null)
         {
-            OnMoveJoystick(context.ReadValue<Vector2>());
+            OnMoveJoystick(context.ReadValue<Vector2>());            
         }
     }
     void StartTouchPrimary(InputAction.CallbackContext context){

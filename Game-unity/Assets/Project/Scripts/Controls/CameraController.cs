@@ -10,28 +10,63 @@ public class CameraController : MonoBehaviour
         inputManager = InputManager.Instance;
     }
 
+    [SerializeField] private float rotationStrenght = 0.5f;
 
     private void OnEnable() {
-        inputManager.OnMoveJoystick += rotate;
+        inputManager.OnMoveJoystick += OnMoveJoystick;
+        inputManager.OnStartTouch += onStartTouching;
+        inputManager.OnEndTouch += onStopTouching;
     }
     private void OnDisable() {
-        inputManager.OnMoveJoystick -= rotate;
+        inputManager.OnMoveJoystick -= OnMoveJoystick;
+        inputManager.OnStartTouch -= onStartTouching;
+        inputManager.OnEndTouch -= onStopTouching;
     }   
     private void Start() {
-        rotationY = transform.rotation.y;   
-    }   
+        rotationY = transform.rotation.y;  
+    }
 
-    public void rotate(Vector2 direction){
-        // todo: add a constant rotation when moving the joystick
-        // todo: fix a roation on one axis at time (if two angle modifying all of them)
+    bool isTouching = false;
+    bool joystickIsMoving = false;
+    private Vector2 rotationDirection;
 
-        // rotationStrength
-        print("rotate");
-        // initialRotation 
-        transform.Rotate(new Vector3(0, direction.x, 0), Space.World);
-        transform.Rotate(new Vector3(direction.y, 0, 0), Space.Self);
-        // float deg = 
-        // rotationY += rotationStrength;
+    void OnMoveJoystick(Vector2 direction){
+        rotationDirection = direction;
+
+        if(joystickIsMoving == false) {
+            joystickIsMoving = true;
+        }
+
+        if(isTouching && joystickIsMoving){
+            StartCoroutine(rotateCam());
+        }
+    }
+
+    void onStartTouching(Vector3 position, float time){
+        if(isTouching == false) {
+            isTouching = true;
+        }
+    }
+
+    void onStopTouching(Vector3 position, float time){
+        if(joystickIsMoving == true) {
+            joystickIsMoving = false;
+        }
+        if(isTouching == true) {
+            isTouching = false;
+        }
+    }
+
+    
+    IEnumerator rotateCam(){
+        while(isTouching == true && joystickIsMoving == true){
+            transform.Rotate(new Vector3(0, -rotationDirection.x * rotationStrenght, 0), Space.World);
+            transform.Rotate(new Vector3(rotationDirection.y * rotationStrenght, 0, 0), Space.Self);
+            yield return new WaitForEndOfFrame();
+        }
+        
+        rotationDirection = Vector2.zero;
+        yield return new WaitForEndOfFrame();
     }
 
     public void rotateTemporary(float rotationStrength){
