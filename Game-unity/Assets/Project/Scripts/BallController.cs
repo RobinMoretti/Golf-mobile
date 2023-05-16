@@ -7,7 +7,7 @@ public class BallController : MonoBehaviour
     [SerializeField] private float shotStrenght = 2;
     [SerializeField] private ForceMode forceMode;
 
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
 
     private void Start() {
         rigidbody = GetComponent<Rigidbody>();

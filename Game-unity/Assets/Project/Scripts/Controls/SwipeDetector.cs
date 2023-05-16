@@ -54,7 +54,7 @@ public class SwipeDetector : MonoBehaviour
             yield return new WaitForFixedUpdate();
             trail.transform.position = inputManager.PrimaryPosition();
 
-            // // detect if touched
+            // detect if touched the ball
             if(playerHitTheBall == false){
                 Ray ray = Camera.main.ScreenPointToRay(inputManager.getTouchPosition());
                 RaycastHit hitInfo;

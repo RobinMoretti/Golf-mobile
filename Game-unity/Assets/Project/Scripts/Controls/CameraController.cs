@@ -5,12 +5,16 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private float rotationY = 0;
+
     private InputManager inputManager;
     private void Awake() {
         inputManager = InputManager.Instance;
     }
 
-    [SerializeField] private float rotationStrenght = 0.5f;
+    [SerializeField] private float rotationYStrenght = 0.5f;
+    [SerializeField] private float rotationXStrenght = 0.5f;
+    [SerializeField] private float rotationYOffsetBottom = 10f;
+    [SerializeField] private float rotationYOffsetTop = 80f;
 
     private void OnEnable() {
         inputManager.OnMoveJoystick += OnMoveJoystick;
@@ -60,13 +64,20 @@ public class CameraController : MonoBehaviour
     
     IEnumerator rotateCam(){
         while(isTouching == true && joystickIsMoving == true){
-            transform.Rotate(new Vector3(0, -rotationDirection.x * rotationStrenght, 0), Space.World);
-            transform.Rotate(new Vector3(rotationDirection.y * rotationStrenght, 0, 0), Space.Self);
-            yield return new WaitForEndOfFrame();
+            if(transform.eulerAngles.x < rotationYOffsetTop && rotationDirection.y > 0 ){
+                transform.Rotate(new Vector3(rotationDirection.y * rotationYStrenght, 0, 0), Space.Self);
+            }
+            else if (transform.eulerAngles.x > rotationYOffsetBottom && rotationDirection.y < 0){
+                transform.Rotate(new Vector3(rotationDirection.y * rotationYStrenght, 0, 0), Space.Self);
+            }
+            
+            transform.Rotate(new Vector3(0, -rotationDirection.x * rotationXStrenght, 0), Space.World);
+
+            yield return new WaitForFixedUpdate();
         }
         
         rotationDirection = Vector2.zero;
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
     }
 
     public void rotateTemporary(float rotationStrength){
