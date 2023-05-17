@@ -1982,6 +1982,34 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!1 &558571801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5568371526223589888, guid: 2c3e44a05c1109c40b9062e9d30a84e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1197285042}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &558571805
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558571801}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2534964839176971238, guid: 2c3e44a05c1109c40b9062e9d30a84e8, type: 3}
 --- !u!1001 &574206718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2777,7 +2805,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112690462}
-  m_Material: {fileID: 13400000, guid: 1497b27d8dbee1c4489fd80e883b4925, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3068,6 +3096,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1928667166}
+    - targetCorrespondingSourceObject: {fileID: -5568371526223589888, guid: 2c3e44a05c1109c40b9062e9d30a84e8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 558571805}
     - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 2c3e44a05c1109c40b9062e9d30a84e8,
         type: 3}
       insertIndex: -1
@@ -3685,7 +3717,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928667158}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 12b551189eb90034eb69165a3298925d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
