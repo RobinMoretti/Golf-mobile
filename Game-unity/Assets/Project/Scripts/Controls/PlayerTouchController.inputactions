@@ -15,9 +15,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SecondaryContact",
+                    "type": "PassThrough",
+                    "id": "d09ceae7-9b1d-4b0f-9d6d-a7faaa5ebb99",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "PrimaryPosition",
                     "type": "PassThrough",
                     "id": "4a6e97b6-e9b5-4a5a-ab15-7e785f26246f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SecondaryPosition",
+                    "type": "PassThrough",
+                    "id": "4f4d699f-7b30-4eff-8944-7464222999f5",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -48,7 +66,7 @@
                 {
                     "name": "",
                     "id": "094acf89-7b39-4f8a-8f6b-1d418f6c67fb",
-                    "path": "<Touchscreen>/primaryTouch/position",
+                    "path": "<Touchscreen>/touch0/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -64,6 +82,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "CamJoystick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e232b43b-872d-4197-9a29-37040cb63a4f",
+                    "path": "<Touchscreen>/touch1/press",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryContact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a545b201-cd12-469b-bcd5-c0f17c6d36bf",
+                    "path": "<Touchscreen>/touch1/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

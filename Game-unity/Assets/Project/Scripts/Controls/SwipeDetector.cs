@@ -29,10 +29,24 @@ public class SwipeDetector : MonoBehaviour
     private void OnEnable() {
         inputManager.OnStartTouch += SwipeStart;
         inputManager.OnEndTouch += SwipeEnd;
+        inputManager.OnStartSecondaryTouch += startZoomAndPan;
+        inputManager.OnEndSecondaryTouch += stopZoomAndPan;
     }
     private void OnDisable() {
         inputManager.OnStartTouch -= SwipeStart;
         inputManager.OnEndTouch -= SwipeEnd;
+        inputManager.OnStartSecondaryTouch -= startZoomAndPan;
+        inputManager.OnEndSecondaryTouch -= stopZoomAndPan;
+    }
+
+    private void startZoomAndPan(Vector3 position, float time)
+    {
+
+    }
+
+    private void stopZoomAndPan(Vector3 position, float time)
+    {
+
     }
 
     private void SwipeStart(Vector3 position, float time){
@@ -86,7 +100,6 @@ public class SwipeDetector : MonoBehaviour
                 particulesEmitter.SetActive(true);
 
                 // shake the cam 
-                Debug.Log("swipeLength.Remap(0, 0.8f, 0.2f, 1.2f) = " + swipeLength.Remap(0.1f, 0.8f, 0.02f, 1.2f) );
                 cameraController.shakeCam(swipeLength.Remap(0.15f, 0.8f, 0.05f, 1.6f));
 
 

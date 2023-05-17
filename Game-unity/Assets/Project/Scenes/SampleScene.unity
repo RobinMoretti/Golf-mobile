@@ -3064,6 +3064,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1928667162}
+    - targetCorrespondingSourceObject: {fileID: 7191382246069683521, guid: 2c3e44a05c1109c40b9062e9d30a84e8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1928667166}
     - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 2c3e44a05c1109c40b9062e9d30a84e8,
         type: 3}
       insertIndex: -1
@@ -3696,3 +3700,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6207043592586253420, guid: 2c3e44a05c1109c40b9062e9d30a84e8, type: 3}
+--- !u!114 &1928667166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928667158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0.078, g: 0.073580004, b: 0.07137, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

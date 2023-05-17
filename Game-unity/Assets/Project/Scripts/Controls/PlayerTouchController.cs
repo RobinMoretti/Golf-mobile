@@ -37,9 +37,27 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""SecondaryContact"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""d09ceae7-9b1d-4b0f-9d6d-a7faaa5ebb99"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""PrimaryPosition"",
                     ""type"": ""PassThrough"",
                     ""id"": ""4a6e97b6-e9b5-4a5a-ab15-7e785f26246f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SecondaryPosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4f4d699f-7b30-4eff-8944-7464222999f5"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -70,7 +88,7 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
                 {
                     ""name"": """",
                     ""id"": ""094acf89-7b39-4f8a-8f6b-1d418f6c67fb"",
-                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""path"": ""<Touchscreen>/touch0/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -88,6 +106,28 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
                     ""action"": ""CamJoystick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e232b43b-872d-4197-9a29-37040cb63a4f"",
+                    ""path"": ""<Touchscreen>/touch1/press"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryContact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a545b201-cd12-469b-bcd5-c0f17c6d36bf"",
+                    ""path"": ""<Touchscreen>/touch1/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -97,7 +137,9 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_PrimaryContact = m_Touch.FindAction("PrimaryContact", throwIfNotFound: true);
+        m_Touch_SecondaryContact = m_Touch.FindAction("SecondaryContact", throwIfNotFound: true);
         m_Touch_PrimaryPosition = m_Touch.FindAction("PrimaryPosition", throwIfNotFound: true);
+        m_Touch_SecondaryPosition = m_Touch.FindAction("SecondaryPosition", throwIfNotFound: true);
         m_Touch_CamJoystick = m_Touch.FindAction("CamJoystick", throwIfNotFound: true);
     }
 
@@ -161,14 +203,18 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
     private readonly InputActionMap m_Touch;
     private List<ITouchActions> m_TouchActionsCallbackInterfaces = new List<ITouchActions>();
     private readonly InputAction m_Touch_PrimaryContact;
+    private readonly InputAction m_Touch_SecondaryContact;
     private readonly InputAction m_Touch_PrimaryPosition;
+    private readonly InputAction m_Touch_SecondaryPosition;
     private readonly InputAction m_Touch_CamJoystick;
     public struct TouchActions
     {
         private @PlayerTouchController m_Wrapper;
         public TouchActions(@PlayerTouchController wrapper) { m_Wrapper = wrapper; }
         public InputAction @PrimaryContact => m_Wrapper.m_Touch_PrimaryContact;
+        public InputAction @SecondaryContact => m_Wrapper.m_Touch_SecondaryContact;
         public InputAction @PrimaryPosition => m_Wrapper.m_Touch_PrimaryPosition;
+        public InputAction @SecondaryPosition => m_Wrapper.m_Touch_SecondaryPosition;
         public InputAction @CamJoystick => m_Wrapper.m_Touch_CamJoystick;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
@@ -182,9 +228,15 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
             @PrimaryContact.started += instance.OnPrimaryContact;
             @PrimaryContact.performed += instance.OnPrimaryContact;
             @PrimaryContact.canceled += instance.OnPrimaryContact;
+            @SecondaryContact.started += instance.OnSecondaryContact;
+            @SecondaryContact.performed += instance.OnSecondaryContact;
+            @SecondaryContact.canceled += instance.OnSecondaryContact;
             @PrimaryPosition.started += instance.OnPrimaryPosition;
             @PrimaryPosition.performed += instance.OnPrimaryPosition;
             @PrimaryPosition.canceled += instance.OnPrimaryPosition;
+            @SecondaryPosition.started += instance.OnSecondaryPosition;
+            @SecondaryPosition.performed += instance.OnSecondaryPosition;
+            @SecondaryPosition.canceled += instance.OnSecondaryPosition;
             @CamJoystick.started += instance.OnCamJoystick;
             @CamJoystick.performed += instance.OnCamJoystick;
             @CamJoystick.canceled += instance.OnCamJoystick;
@@ -195,9 +247,15 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
             @PrimaryContact.started -= instance.OnPrimaryContact;
             @PrimaryContact.performed -= instance.OnPrimaryContact;
             @PrimaryContact.canceled -= instance.OnPrimaryContact;
+            @SecondaryContact.started -= instance.OnSecondaryContact;
+            @SecondaryContact.performed -= instance.OnSecondaryContact;
+            @SecondaryContact.canceled -= instance.OnSecondaryContact;
             @PrimaryPosition.started -= instance.OnPrimaryPosition;
             @PrimaryPosition.performed -= instance.OnPrimaryPosition;
             @PrimaryPosition.canceled -= instance.OnPrimaryPosition;
+            @SecondaryPosition.started -= instance.OnSecondaryPosition;
+            @SecondaryPosition.performed -= instance.OnSecondaryPosition;
+            @SecondaryPosition.canceled -= instance.OnSecondaryPosition;
             @CamJoystick.started -= instance.OnCamJoystick;
             @CamJoystick.performed -= instance.OnCamJoystick;
             @CamJoystick.canceled -= instance.OnCamJoystick;
@@ -221,7 +279,9 @@ public partial class @PlayerTouchController: IInputActionCollection2, IDisposabl
     public interface ITouchActions
     {
         void OnPrimaryContact(InputAction.CallbackContext context);
+        void OnSecondaryContact(InputAction.CallbackContext context);
         void OnPrimaryPosition(InputAction.CallbackContext context);
+        void OnSecondaryPosition(InputAction.CallbackContext context);
         void OnCamJoystick(InputAction.CallbackContext context);
     }
 }
