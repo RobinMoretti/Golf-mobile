@@ -17,7 +17,8 @@ public class SwipeDetector : MonoBehaviour
     [SerializeField] private GameObject ball;
     [SerializeField] private LayerMask canBeShotLayer;
     [SerializeField] private CameraController cameraController;
-
+    [SerializeField] private GameObject particulesEmitter;
+    private Vector3 ballContactPosition;
 
     private bool playerHitTheBall = false;
 
@@ -56,7 +57,8 @@ public class SwipeDetector : MonoBehaviour
 
             // detect if touched the ball
             if(playerHitTheBall == false){
-                Ray ray = Camera.main.ScreenPointToRay(inputManager.getTouchPosition());
+                ballContactPosition = inputManager.getTouchPosition();
+                Ray ray = Camera.main.ScreenPointToRay(ballContactPosition);
                 RaycastHit hitInfo;
                 if(Physics.Raycast(ray, out hitInfo, canBeShotLayer)){
                     if(hitInfo.collider.gameObject.tag == "Player"){
@@ -75,16 +77,19 @@ public class SwipeDetector : MonoBehaviour
 
             if(playerHitTheBall){
                 Debug.DrawLine(startPosition, endPosition, Color.blue, 5f);
+                
                 // get the shot vertor
                 Vector3 direction = endPosition - startPosition;
 
-                ball.GetComponent<BallController>().shot(direction, swipeLength);
+                // display shooting particule
+                Debug.Log("ballContactPosition = " + ballContactPosition );
+                
+                particulesEmitter.transform.position = ballContactPosition;
+                particulesEmitter.SetActive(true);
 
-                print("fireeeee");
+                // shake the cam 
+                ball.GetComponent<BallController>().shot(direction, swipeLength);
             }
-            // ball.GetComponent<Rigidbody>().AddExplosionForce(
-            //     Vector2.Distance(startPosition, endPosition), 
-            //     ball.transform.position, 1);
 
         }
 
