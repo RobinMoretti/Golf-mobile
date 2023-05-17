@@ -82,12 +82,14 @@ public class SwipeDetector : MonoBehaviour
                 Vector3 direction = endPosition - startPosition;
 
                 // display shooting particule
-                Debug.Log("ballContactPosition = " + ballContactPosition );
-                
                 particulesEmitter.transform.position = ballContactPosition;
                 particulesEmitter.SetActive(true);
 
                 // shake the cam 
+                Debug.Log("swipeLength.Remap(0, 0.8f, 0.2f, 1.2f) = " + swipeLength.Remap(0.1f, 0.8f, 0.02f, 1.2f) );
+                cameraController.shakeCam(swipeLength.Remap(0.15f, 0.8f, 0.05f, 1.6f));
+
+
                 ball.GetComponent<BallController>().shot(direction, swipeLength);
             }
 

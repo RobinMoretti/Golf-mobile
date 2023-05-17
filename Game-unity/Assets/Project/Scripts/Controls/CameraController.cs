@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float rotationXStrenght = 0.5f;
     [SerializeField] private float rotationYOffsetBottom = 10f;
     [SerializeField] private float rotationYOffsetTop = 80f;
+    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+    private CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
 
     private void OnEnable() {
         inputManager.OnMoveJoystick += OnMoveJoystick;
@@ -27,6 +30,7 @@ public class CameraController : MonoBehaviour
         inputManager.OnEndTouch -= onStopTouching;
     }   
     private void Start() {
+        cinemachineBasicMultiChannelPerlin = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         rotationY = transform.rotation.y;  
     }
 
@@ -86,5 +90,21 @@ public class CameraController : MonoBehaviour
 
     private void updateBallRotation(){
         // transform.
+    }
+
+
+    public void shakeCam(float strength){
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = strength;
+        StartCoroutine(reduceShakingCam());
+    }
+
+    IEnumerator reduceShakingCam(){
+        while(cinemachineBasicMultiChannelPerlin.m_AmplitudeGain > 0.01f){
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain *= 0.91f;
+            yield return new WaitForFixedUpdate();
+        }
+        
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        yield return null;
     }
 }
