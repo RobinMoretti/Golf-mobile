@@ -13,7 +13,8 @@ public class SwipeDetector : MonoBehaviour
     [SerializeField]private float minimumDistance = 0.2f;
     [SerializeField]private float maximumTime = 0.8f;
 
-    [SerializeField] private GameObject trail;
+    [SerializeField] private GameObject trailPrefab;
+    private GameObject trail;
     [SerializeField] private GameObject ball;
     [SerializeField] private LayerMask canBeShotLayer;
     [SerializeField] private CameraController cameraController;
@@ -29,45 +30,36 @@ public class SwipeDetector : MonoBehaviour
     private void OnEnable() {
         inputManager.OnStartTouch += SwipeStart;
         inputManager.OnEndTouch += SwipeEnd;
-        inputManager.OnStartSecondaryTouch += startZoomAndPan;
-        inputManager.OnEndSecondaryTouch += stopZoomAndPan;
     }
     private void OnDisable() {
         inputManager.OnStartTouch -= SwipeStart;
         inputManager.OnEndTouch -= SwipeEnd;
-        inputManager.OnStartSecondaryTouch -= startZoomAndPan;
-        inputManager.OnEndSecondaryTouch -= stopZoomAndPan;
-    }
-
-    private void startZoomAndPan(Vector3 position, float time)
-    {
-
-    }
-
-    private void stopZoomAndPan(Vector3 position, float time)
-    {
-
     }
 
     private void SwipeStart(Vector3 position, float time){
         startPosition = position;
         startTime = time;
-        trail.transform.position = inputManager.PrimaryPosition();
-        trail.GetComponent<TrailRenderer>().Clear();
+        trail = Instantiate(trailPrefab, inputManager.PrimaryPosition(), Quaternion.identity);
+        // trailPrefab.transform.position = inputManager.PrimaryPosition();
+        // trail.GetComponent<TrailRenderer>().Clear();
         StartCoroutine("trailUpdate");
-        
     }
     private void SwipeEnd(Vector3 position, float time){
         endPosition = position;
         endTime = time;
         DetectSwipe();
         StopCoroutine("trailUpdate");
+        Invoke("destroytrail", 0.5f);
+    }
+
+    void destroytrail(){
+        Destroy(trail);
     }
 
     IEnumerator trailUpdate(){
         while(true){
-            yield return new WaitForFixedUpdate();
-            trail.transform.position = inputManager.PrimaryPosition();
+            yield return null;
+            if(trail) trail.transform.position = inputManager.PrimaryPosition();
 
             // detect if touched the ball
             if(playerHitTheBall == false){

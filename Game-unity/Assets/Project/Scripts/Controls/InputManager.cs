@@ -20,9 +20,9 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     //--------------------------------------------------------------------------------------//
 
     public delegate void StartSecondaryTouch(Vector3 position, float time);
-    public event StartTouch OnStartSecondaryTouch;
+    public event StartSecondaryTouch OnStartSecondaryTouch;
     public delegate void EndSecondaryTouch(Vector3 position, float time);
-    public event EndTouch OnEndSecondaryTouch;
+    public event EndSecondaryTouch OnEndSecondaryTouch;
 
     public delegate void MoveJoystick(Vector2 direction);
     public event MoveJoystick OnMoveJoystick;
@@ -65,15 +65,15 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
     }
     void StartTouchSecondary(InputAction.CallbackContext context){
         if(context.ReadValue<float>() == 1){
-            if (OnStartTouch != null)
+            if (OnStartSecondaryTouch != null)
             {
-                OnStartTouch(SecondaryPosition(), (float)context.startTime);
+                OnStartSecondaryTouch(SecondaryPosition(), (float)context.startTime);
             }
         }
         else{
-            if (OnEndTouch != null)
+            if (OnEndSecondaryTouch != null)
             {
-                OnEndTouch(SecondaryPosition(), (float)context.time);
+                OnEndSecondaryTouch(SecondaryPosition(), (float)context.time);
             }
         }
     }

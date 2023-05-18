@@ -11,18 +11,14 @@ public class ZoomAndPanController : MonoBehaviour
     private float startTime, endTime;
     private InputManager inputManager;
 
-    [SerializeField]private float minimumDistance = 0.2f;
-    [SerializeField]private float maximumTime = 0.8f;
+    [SerializeField] private GameObject trailPrefab;
+    private GameObject trail;
 
-    [SerializeField] private GameObject trail;
-    [SerializeField] private GameObject ball;
-    [SerializeField] private LayerMask canBeShotLayer;
     [SerializeField] private CameraController cameraController;
-    private Vector3 ballContactPosition;
 
     [SerializeField] private CinemachineVirtualCamera followingCam;
     Cinemachine3rdPersonFollow cinemachine3rdPersonFollow;
-    [SerializeField] private float cameraSpeed = 4;
+    [SerializeField] private float cameraSpeed = 5;
 
 
 
@@ -44,11 +40,11 @@ public class ZoomAndPanController : MonoBehaviour
     }
 
     private void startZoomAndPan(Vector3 position, float time)
-    {
+    {   
+        print("startZoomAndPan");
         startPosition = position;
         startTime = time;
-        trail.transform.position = inputManager.SecondaryPosition();
-        trail.GetComponent<TrailRenderer>().Clear();
+        trail = Instantiate(trailPrefab, inputManager.PrimaryPosition(), Quaternion.identity);
         StartCoroutine("trailUpdate");
     }
 
@@ -60,27 +56,36 @@ public class ZoomAndPanController : MonoBehaviour
         StopCoroutine("trailUpdate");
     }
 
-
+    float zoomStrength = 0.008f;
     IEnumerator trailUpdate(){
         float previousDistance = 0, distance = 0;
+        float initialCamDistance = cinemachine3rdPersonFollow.CameraDistance;
+        float initialFingerDistance = Vector2.Distance(inputManager.getTouchPosition(1), inputManager.getTouchPosition(2));;
+
         while(true){
             yield return new WaitForFixedUpdate();
-            trail.transform.position = inputManager.SecondaryPosition();
-            distance = Vector2.Distance(inputManager.PrimaryPosition(), inputManager.SecondaryPosition());
+            if(trail) trail.transform.position = inputManager.SecondaryPosition();
 
-            // zoom out
-            if(distance > previousDistance){
-                float targetDistance = cinemachine3rdPersonFollow.CameraDistance - 2;
-                cinemachine3rdPersonFollow.CameraDistance = Mathf.Lerp(cinemachine3rdPersonFollow.CameraDistance, targetDistance, Time.deltaTime * cameraSpeed);
+            distance = Vector2.Distance(inputManager.getTouchPosition(1), inputManager.getTouchPosition(2));
+            
+            if(cinemachine3rdPersonFollow.CameraDistance > 0.8f && cinemachine3rdPersonFollow.CameraDistance < 50){
+                float targetOffset = Mathf.Abs(distance - initialFingerDistance);
+
+                if(targetOffset < 1f) yield return null;
+
+                // zoom out
+                if(distance > previousDistance){
+                    float targetDistance = cinemachine3rdPersonFollow.CameraDistance - (targetOffset*zoomStrength);
+                    cinemachine3rdPersonFollow.CameraDistance = Mathf.Lerp(cinemachine3rdPersonFollow.CameraDistance, targetDistance, Time.deltaTime * cameraSpeed);
+                }
+                // zoom in
+                else if(distance < previousDistance){
+                    float targetDistance = cinemachine3rdPersonFollow.CameraDistance + (targetOffset*zoomStrength);
+                    cinemachine3rdPersonFollow.CameraDistance = Mathf.Lerp(cinemachine3rdPersonFollow.CameraDistance, targetDistance, Time.deltaTime * cameraSpeed);
+                }
+
+                previousDistance = distance;
             }
-            // zoom in
-            else if(distance < previousDistance){
-                float targetDistance = cinemachine3rdPersonFollow.CameraDistance + 2;
-                cinemachine3rdPersonFollow.CameraDistance = Mathf.Lerp(cinemachine3rdPersonFollow.CameraDistance, targetDistance, Time.deltaTime * cameraSpeed);
-
-            }
-
-            previousDistance = distance;
 
             yield return new WaitForFixedUpdate();
         }
